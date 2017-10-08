@@ -86,8 +86,8 @@ class BlogSolutionListUpdate(object):
         self._update_blog = update_blog
         self._should_statics = should_statics
 
-    @classmethod
-    def update(cls, leetcode_list: dict, blog_list: dict):
+    @staticmethod
+    def update_blog_list_from_leetcode_list(leetcode_list: dict, blog_list: dict):
         res = {}
         for _id, info in leetcode_list.items():
             if not info.is_lock:
@@ -150,7 +150,7 @@ class BlogSolutionListUpdate(object):
         self.leetcode_list = LeetcodeProblemList().get_list(self._update_leetcode)
         self.blog_list = BlogSolutionList().get_list(self._update_blog)
 
-        self.after_update = self.update(self.leetcode_list, self.blog_list)
+        self.after_update = self.update_blog_list_from_leetcode_list(self.leetcode_list, self.blog_list)
         # test(res, blog_list)
         self.save_in_table(self.after_update, self.res_save_path)
         if self._should_statics:
