@@ -26,13 +26,13 @@ def main():
                        .format(cur_problem.url, cur_problem.title))
             ans.append('<p>题目大意</p>')
             ans.append('<p>思路</p>')
-            ans.append('<hr>\n<br>\n<br>\n<br>\n<br>\n')
+            ans.append('\n<br>\n<br><hr>\n<br>\n<br>\n')
         f.writelines('\n'.join(ans))
         f.write('本文是leetcode如下的题解<br>\n')
         for t in titles:
             f.write('<li>{}. {}</li>\n'.format(t[0], t[1]))
         f.write('更多题解可以查看：<a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank"> '
-                'https://www.hrwhisper.me/leetcode-algorithm-solution/</a>')
+                'https://www.hrwhisper.me/leetcode-algorithm-solution/</a>\n<br>\n<br>')
 
 
 if __name__ == '__main__':
