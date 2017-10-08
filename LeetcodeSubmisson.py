@@ -4,7 +4,7 @@
 import codecs
 import json
 
-from hrwhisper_package1.leetcode_spider.LoginLeetcode import LoginLeetcode
+from LoginLeetcode import LoginLeetcode
 
 
 class LeetcodeSubmisson(LoginLeetcode):

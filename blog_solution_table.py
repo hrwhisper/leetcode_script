@@ -4,33 +4,7 @@
 import codecs
 from pprint import pprint
 from bs4 import BeautifulSoup
-from hrwhisper_package1.leetcode_spider.LeetcodeProblemList import LeetcodeProblemList, LeetcodeProblemInfo
-
-
-# class LeetcodeProblemInfoHelper(object):
-#     @staticmethod
-#     def get_html():
-#         # chrome 右键另存为，然后打开Html复制源代码新建一个
-#         with open('./data/leetcode.html') as f:
-#             return f.read()
-#
-#     @staticmethod
-#     def leetcode_html_parse():
-#         problem_list = {}
-#
-#         soup = BeautifulSoup(LeetcodeProblemInfoHelper.get_html(), "lxml")
-#         for tr in soup.find(class_='question-list-table').tbody.find_all('tr'):
-#             cur = tr.find_all('td')
-#             is_ac = cur[0].has_attr('value')
-#             number = cur[1].text
-#             title_soup = cur[2]
-#             title = title_soup.text.rstrip('New').strip()
-#             is_lock = title_soup.find(class_='fa-lock') is not None
-#             acceptance = cur[4].text
-#             difficulty = cur[5].text
-#             # problem_list.append([is_ac, number, title, is_lock, acceptance, difficulty])
-#             problem_list[int(number)] = LeetcodeProblemInfo(number, is_ac, title, acceptance, difficulty, is_lock)
-#         return problem_list
+from LeetcodeProblemList import LeetcodeProblemList, LeetcodeProblemInfo
 
 
 class BlogProblemInfo(LeetcodeProblemInfo):
@@ -159,7 +133,7 @@ def statics(leetcode_list: dict, blog_list: dict, res: dict):
     print('已发的题解数: {}'.format(solution_number))
 
 
-def create_blog_solution_table_html_code(leetcode_list=None, new_list=False):
+def create_blog_solution_table_html_code(leetcode_list=None, new_list=False, should_statics=True):
     if not leetcode_list:
         leetcode_list = LeetcodeProblemList().get_list(new_list)
     # leetcode_list = LeetcodeProblemInfoHelper.leetcode_html_parse()
@@ -168,7 +142,9 @@ def create_blog_solution_table_html_code(leetcode_list=None, new_list=False):
     res = merge(leetcode_list, blog_list)
     # test(res, blog_list)
     save_in_table(res)
-    statics(leetcode_list, blog_list, res)
+    if should_statics:
+        statics(leetcode_list, blog_list, res)
+    return res
 
 
 if __name__ == '__main__':

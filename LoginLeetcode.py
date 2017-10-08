@@ -2,8 +2,6 @@
 # @Date    : 2017/10/4
 # @Author  : hrwhisper
 
-import codecs
-import json
 
 import requests
 from bs4 import BeautifulSoup

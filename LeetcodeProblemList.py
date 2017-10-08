@@ -4,20 +4,22 @@
 import codecs
 import json
 
-from hrwhisper_package1.leetcode_spider.LoginLeetcode import LoginLeetcode
+from LoginLeetcode import LoginLeetcode
 
 
 class LeetcodeProblemInfo(object):
-    def __init__(self, number, is_ac, title, acceptance, difficulty, is_lock=False):
+    def __init__(self, number, is_ac, title, acceptance, difficulty, is_lock=False, url=''):
         self.number = number
         self.is_ac = is_ac
         self.title = title
         self.acceptance = acceptance
         self.difficulty = difficulty
         self.is_lock = is_lock
+        self.url = url
 
     def __str__(self):
-        return '\t'.join(map(str,[self.number, self.is_ac, self.title, self.acceptance, self.difficulty]))
+        return '\t'.join(
+            map(str, [self.number, self.is_ac, self.title, self.acceptance, self.difficulty, self.is_lock, self.url]))
 
 
 class LeetcodeProblemList(LoginLeetcode):
@@ -61,7 +63,8 @@ class LeetcodeProblemList(LoginLeetcode):
             acceptance = '{0:.1f}%'.format(cur['stat']['total_acs'] / cur['stat']['total_submitted'] * 100)
             difficulty = self._level2difficult[cur['difficulty']['level']]
             is_lock = cur['paid_only']
-            res[int(number)] = LeetcodeProblemInfo(number, is_ac, title, acceptance, difficulty, is_lock)
+            url = 'https://leetcode.com/problems/{}/'.format(cur['stat']['question__article__slug'])
+            res[int(number)] = LeetcodeProblemInfo(number, is_ac, title, acceptance, difficulty, is_lock, url)
         return res
 
 
