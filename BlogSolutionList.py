@@ -17,8 +17,8 @@ class BlogProblemInfo(LeetcodeProblemInfo):
         '': 4
     }
 
-    def __init__(self, number, is_ac, title, acceptance, difficulty, solution_url='', language=''):
-        super().__init__(number, is_ac, title, acceptance, difficulty, is_lock=False)
+    def __init__(self, number, is_ac, title, acceptance, difficulty, solution_url='', language='', is_lock=False):
+        super().__init__(number, is_ac, title, acceptance, difficulty, is_lock=is_lock)
         self.solution_url = solution_url
         # 让language显示更好看
         self.language = ' / '.join(sorted(language.strip().title().split('/'), key=lambda d: self._order[d.strip()]))
@@ -28,7 +28,8 @@ class BlogProblemInfo(LeetcodeProblemInfo):
 
     @staticmethod
     def create_from_leetcode_problem_info(info):
-        return BlogProblemInfo(info.number, info.is_ac, info.title, info.acceptance, info.difficulty)
+        return BlogProblemInfo(info.number, info.is_ac, info.title, info.acceptance, info.difficulty,
+                               is_lock=info.is_lock)
 
     def update(self, info, print_diff_change=False, print_lock_change=False):
         if print_lock_change and info.is_ac and info.is_lock:
@@ -40,6 +41,7 @@ class BlogProblemInfo(LeetcodeProblemInfo):
         if print_diff_change and self.difficulty.strip() != info.difficulty.strip():
             print('{}\t{}\t | \t{} -> {}'.format(self.number, self.title, self.difficulty, info.difficulty))
         self.difficulty = info.difficulty
+        self.is_lock = info.is_lock
         return self
 
 
@@ -56,7 +58,7 @@ class BlogSolutionList(object):
         with codecs.open(self._blog_solution_html_save_path, 'w', 'utf-8') as f:
             f.write(content)
 
-    def get_list(self, update_from_blog=True, update_local=True):
+    def get_list(self, update_from_blog=True):
         problem_list = {}
         if update_from_blog:
             soup = BeautifulSoup(requests.get(self._blog_url).text, "lxml")
@@ -96,15 +98,15 @@ class BlogSolutionListUpdate(object):
                 else:
                     res[_id] = blog_list[_id].update(info)
             else:
-                if _id in blog_list:  # 以前没加锁的后来加锁的。
-                    if blog_list[_id].solution_url:  # 那么需要有题解才保留
+                if info.is_ac:  # 以前没加锁的后来加锁的。
+                    if _id in blog_list:  # 写过题解
                         res[_id] = blog_list[_id].update(info)
-                elif info.is_ac and info.is_lock:  # 这个也是以前没加锁的后来加锁的。
-                    # print('{}\t{}\t'.format(info.number, info.title))
-                    res[_id] = BlogProblemInfo.create_from_leetcode_problem_info(info)
-                    # print(_id)
-                    # print(set(blog_list.keys()) - set(leetcode_list.keys()))
-                    #  {544, 418, 471, 484, 422, 487, 425, 490, 536, 527, 465, 499, 531, 469, 533, 439, 408, 505, 411, 444}
+                    else:  # 这个也是以前没加锁的后来加锁的。
+                        # print('{}\t{}\t'.format(info.number, info.title))
+                        res[_id] = BlogProblemInfo.create_from_leetcode_problem_info(info)
+                        # print(_id)
+                        # print(set(blog_list.keys()) - set(leetcode_list.keys()))
+                        #  {544, 418, 471, 484, 422, 487, 425, 490, 536, 527, 465, 499, 531, 469, 533, 439, 408, 505, 411, 444}
         return res
 
     def save_in_table(self, res: dict, save_path: str = None):
@@ -123,9 +125,17 @@ class BlogSolutionListUpdate(object):
                 line.append('<tr><td>{}</td>'.format(' √' if info.is_ac else ''))
                 line.append('<td>{}</td>'.format(info.number))
                 if info.solution_url:
-                    line.append('<td><a href="{}" target="_blank">{}</a></td>'.format(info.solution_url, info.title))
+                    if info.is_lock:
+                        line.append(
+                            '<td><a href="{}" target="_blank">{}</a> <sup><span class="glyphicon glyphicon-lock"></span></sup></td>'
+                                .format(info.solution_url, info.title))
+                    else:
+                        line.append('<td><a href="{}" target="_blank">{}</a></td>'
+                                    .format(info.solution_url, info.title))
                 else:
-                    line.append(('<td>{}</td>'.format(info.title)))
+                    line.append(('<td>{}</td>'.format(info.title)) if not info.is_lock else
+                                '<td>{} <sup><span class="glyphicon glyphicon-lock"></span></sup></td>'.format(
+                                    info.title))
                 line.append('<td>{}</td>'.format(info.acceptance))
                 line.append(('<td>{}</td>'.format(info.difficulty)))
                 line.append('<td>{}</td>'.format(info.language))
@@ -159,6 +169,6 @@ class BlogSolutionListUpdate(object):
 
 
 if __name__ == '__main__':
-    s = BlogSolutionList()
-    print(s.get_list())
-    BlogSolutionListUpdate().create_blog_solution_table_html_code()
+    # s = BlogSolutionList()
+    # print (s.get_list())
+    BlogSolutionListUpdate(update_leetcode=False, update_blog=True).create_blog_solution_table_html_code()

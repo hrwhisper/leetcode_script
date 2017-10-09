@@ -63,7 +63,7 @@ class LeetcodeProblemList(LoginLeetcode):
             acceptance = '{0:.1f}%'.format(cur['stat']['total_acs'] / cur['stat']['total_submitted'] * 100)
             difficulty = self._level2difficult[cur['difficulty']['level']]
             is_lock = cur['paid_only']
-            url = 'https://leetcode.com/problems/{}/'.format(cur['stat']['question__article__slug'])
+            url = 'https://leetcode.com/problems/{}/'.format(cur['stat']['question__title_slug'])
             res[int(number)] = LeetcodeProblemInfo(number, is_ac, title, acceptance, difficulty, is_lock, url)
         return res
 
