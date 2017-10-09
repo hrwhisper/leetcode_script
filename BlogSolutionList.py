@@ -20,8 +20,11 @@ class BlogProblemInfo(LeetcodeProblemInfo):
     def __init__(self, number, is_ac, title, acceptance, difficulty, solution_url='', language='', is_lock=False):
         super().__init__(number, is_ac, title, acceptance, difficulty, is_lock=is_lock)
         self.solution_url = solution_url
-        # 让language显示更好看
-        self.language = ' / '.join(sorted(language.strip().title().split('/'), key=lambda d: self._order[d.strip()]))
+        self.language = self.language_format(language)
+
+    @classmethod
+    def language_format(cls, language):  # 让language显示更好看
+        return ' / '.join(sorted(set(map(lambda x:x.strip().title(),language.split('/'))), key=lambda d: cls._order[d.strip()]))
 
     def __str__(self):
         return '\t'.join([super().__str__(), self.solution_url, self.language])
