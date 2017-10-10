@@ -24,7 +24,8 @@ class BlogProblemInfo(LeetcodeProblemInfo):
 
     @classmethod
     def language_format(cls, language):  # 让language显示更好看
-        return ' / '.join(sorted(set(map(lambda x:x.strip().title(),language.split('/'))), key=lambda d: cls._order[d.strip()]))
+        return ' / '.join(sorted(filter(lambda x: x, set(map(lambda x: x.strip().title(), language.split('/')))),
+                                 key=lambda d: cls._order[d.strip()]))
 
     def __str__(self):
         return '\t'.join([super().__str__(), self.solution_url, self.language])

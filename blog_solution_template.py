@@ -7,14 +7,14 @@ from LeetcodeProblemList import LeetcodeProblemList
 
 
 def main():
-    id_list = [691, 693, 694, 695]
+    id_list = [432]
     id_list.sort()
     leetcode_list = LeetcodeProblemList().get_list(update_from_leetcode=False)
     with codecs.open('./data/current_solution.html', 'w', 'utf-8') as f:
         titles = [(leetcode_list[_id].number, leetcode_list[_id].title) for _id in id_list]
         f.write('本次题解包括\n')
         for t in titles:
-            f.write('<li>{}. {}</li>\n'.format(t[0], t[1]))
+            f.write('<li><b>{}</b>. {}</li>\n'.format(t[0], t[1]))
         f.write('<!--more-->\n')
 
         ans = []
@@ -26,6 +26,9 @@ def main():
                        .format(cur_problem.url, cur_problem.title))
             ans.append('<p>题目大意</p>')
             ans.append('<p>思路</p>')
+            ans.append('<p>C++</p>')
+            ans.append('<p>Java</p>')
+            ans.append('<p>Python</p>')
             ans.append('\n<br>\n<br><hr>\n<br>\n<br>\n')
         f.writelines('\n'.join(ans))
         f.write('本文是leetcode如下的题解<br>\n')
