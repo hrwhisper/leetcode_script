@@ -24,11 +24,11 @@ def update_solution(id_dict: dict):
 if __name__ == '__main__':
     # add_new_solution()
     update_solution({
-        326: {
-            'language': 'java'
-        },
-        432: {
+        204: {
             'language': 'c++ / java / python',
-            'solution_url': 'https://www.hrwhisper.me/leetcode-datastructure/'
+        },
+        449: {
+            'solution_url': 'https://www.hrwhisper.me/leetcode-tree/',
+            'language': 'c++ / java / python',
         }
     })

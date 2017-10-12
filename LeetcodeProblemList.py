@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Date    : 2017/10/4
 # @Author  : hrwhisper
+"""
+leetcode的题目数据结构
+"""
 import codecs
 import json
 
