@@ -19,14 +19,12 @@ class LoginLeetcode(object):
         self.session = requests.session()
         self.my_head = {
             'Host': 'leetcode.com',
-            'Origin': 'https://leetcode.com',
             'Upgrade-Insecure-Requests': '1',
-            'Referer': 'https://leetcode.com/accounts/login/',
+            'Referer':'https://leetcode.com/',
             'Connection': 'keep-alive',
-            'Accept': 'Accept	text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36',
             'Cache-Control': 'max-age=0'
         }
 
@@ -40,8 +38,10 @@ class LoginLeetcode(object):
             'password': self._password
         }
         res = self.session.post(login_url, headers=self.my_head, data=post_data).text
-        # print(res)
 
 
 if __name__ == '__main__':
     s = LoginLeetcode()
+    s.login()
+
+

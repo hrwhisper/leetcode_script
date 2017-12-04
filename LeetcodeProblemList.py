@@ -73,4 +73,4 @@ class LeetcodeProblemList(LoginLeetcode):
 
 if __name__ == '__main__':
     s = LeetcodeProblemList()
-    s.parse_list()
+    s.get_list()
