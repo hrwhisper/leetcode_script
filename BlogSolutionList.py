@@ -156,7 +156,7 @@ class BlogSolutionListUpdate(object):
         print('可做总数: {} (题目总数: {} 有锁题数: {})'.format(total - lock_number, total, lock_number))
         ac_number = len(list(filter(lambda x: x.is_ac, self.leetcode_list.values())))
         ac_and_lock_number = len(list(filter(lambda x: x.is_ac and x.is_lock, self.leetcode_list.values())))
-        print('AC数目: {}(其中，有锁题目)'.format(ac_number, ac_and_lock_number))
+        print('AC数目: {}(其中，有锁题目: {})'.format(ac_number, ac_and_lock_number))
         solution_number = len(list(filter(lambda x: x.solution_url, self.after_update.values())))
         print('已发的题解数: {}'.format(solution_number))
 
