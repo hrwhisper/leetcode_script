@@ -6,8 +6,7 @@ import codecs
 from LeetcodeProblemList import LeetcodeProblemList
 
 
-def main():
-    id_list = [712]
+def main(id_list):
     id_list.sort()
     leetcode_list = LeetcodeProblemList().get_list(update_from_leetcode=False)
     with codecs.open('./data/current_solution.html', 'w', 'utf-8') as f:
@@ -32,7 +31,7 @@ def main():
                 ans.append('<pre class="lang:{} decode:true ">class Solution(object):</pre>'.format(lan))
 
         f.writelines('\n'.join(ans))
-        f.write('\n本文是leetcode如下的题解<br>\n')
+        f.write('\n\n<br>\n<br>\n本文是leetcode如下的题解<br>\n')
         for t in titles:
             f.write('<li><strong>{}</strong>. {}</li>\n'.format(t[0], t[1]))
         f.write('更多题解可以查看：<a href="https://www.hrwhisper.me/leetcode-algorithm-solution/" target="_blank"> '
@@ -40,4 +39,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(id_list=[20])
