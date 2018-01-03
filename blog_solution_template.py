@@ -3,7 +3,18 @@
 # @Author  : hrwhisper
 import codecs
 
+import requests
+from bs4 import BeautifulSoup
+
 from LeetcodeProblemList import LeetcodeProblemList
+
+
+def get_description(base_url):
+    url = base_url + 'description/'
+    print(url)
+    html = requests.get(url, headers=LeetcodeProblemList.my_head).text
+    soup = BeautifulSoup(html, "lxml")
+    return soup.find('meta', {'name': 'description'})['content']
 
 
 def main(id_list):
@@ -22,6 +33,7 @@ def main(id_list):
             print(cur_problem)
             ans.append('\n<br>\n<br><hr>\n<br>\n<br>\n')
             ans.append('<h3>{}. {}</h3>\n\n'.format(int(cur_problem.number), cur_problem.title))
+            ans.append('<blockquote>{}</blockquote>'.format(get_description(cur_problem.url)))
             ans.append('题目地址：<a href="{}" target="_blank" rel="nofollow">leetcode {}</a>' \
                        .format(cur_problem.url, cur_problem.title))
             ans.append('<p>题目大意</p>')
@@ -39,4 +51,4 @@ def main(id_list):
 
 
 if __name__ == '__main__':
-    main(id_list=[20])
+    main(id_list=[22])
