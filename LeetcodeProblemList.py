@@ -61,7 +61,7 @@ class LeetcodeProblemList(LoginLeetcode):
         res = {}
         for cur in d:
             is_ac = cur['status'] == 'ac'
-            number = cur['stat']['question_id']
+            number = cur['stat']['frontend_question_id']
             title = cur['stat']['question__title']
             acceptance = '{0:.1f}%'.format(cur['stat']['total_acs'] / cur['stat']['total_submitted'] * 100)
             difficulty = self._level2difficult[cur['difficulty']['level']]
