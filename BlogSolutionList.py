@@ -114,16 +114,31 @@ class BlogSolutionListUpdate(object):
         return res
 
     def save_in_table(self, res: dict, save_path: str = None):
+        statics_res = self.statics()
         if not save_path:
             save_path = self.res_save_path
         with codecs.open(save_path, 'w', 'utf-8') as f:
-            f.write('''<div class="table-responsive">
+            f.write('''本页面是博主leetcode题解集合(无锁的)
+<ul>
+ 	<li>最左侧是题AC的情况，打勾的表示已经AC(很久没刷题，又落后了)</li>
+ 	<li> 目前题解数:{solution_number}, 可做总数: {can_solve} (题目总数: {total_number} 有锁题数: {lock_number}) </li>
+ 	<li>Title栏目下有链接的就是已经发题解的了,有的题没有写题解，有空的时候补上。</li>
+ 	<li>如果要哪一个我还没发的 leetcode题解报告 ，可以留言，博主抽空就写。</li>
+ 	<li>有任何疑问欢迎留言^ ^ 博主尽快回复</li>
+ 	<li><strong>欢迎指出错误、有更快、更省空间的算法</strong></li>
+</ul>
+<em>使用<a href="https://github.com/hrwhisper/leetcode_script" target="_blank" rel="noopener">爬虫leetcode_script</a>辅助更新本页面 </em>
+
+<!--more-->
+下面是解题报告~：
+ <div class="table-responsive">
 <table class="table table-striped table-centered">
 <thead>
 <tr><th></th><th>#</th><th>Title</th><th>Acceptance</th><th>Difficulty</th><th>Language</th></tr>
 </thead>
 <tbody>
-''')
+'''.format(solution_number=statics_res.solution_number, can_solve=statics_res.can_solve,
+           total_number=statics_res.total_number, lock_number=statics_res.lock_number))
             for _, info in sorted(res.items(), reverse=True):
                 line = list()
                 line.append('<tr><td>{}</td>'.format(' √' if info.is_ac else ''))
@@ -151,14 +166,15 @@ class BlogSolutionListUpdate(object):
 </div>''')
 
     def statics(self):
-        total = len(self.leetcode_list)
+        total_number = len(self.leetcode_list)
         lock_number = len(list(filter(lambda x: x.is_lock, self.leetcode_list.values())))
-        print('可做总数: {} (题目总数: {} 有锁题数: {})'.format(total - lock_number, total, lock_number))
+        can_solve = total_number - lock_number
         ac_number = len(list(filter(lambda x: x.is_ac, self.leetcode_list.values())))
         ac_and_lock_number = len(list(filter(lambda x: x.is_ac and x.is_lock, self.leetcode_list.values())))
-        print('AC数目: {}(其中，有锁题目: {})'.format(ac_number, ac_and_lock_number))
         solution_number = len(list(filter(lambda x: x.solution_url, self.after_update.values())))
-        print('已发的题解数: {}'.format(solution_number))
+        res = StaticsTable(can_solve, total_number, lock_number, ac_number, ac_and_lock_number, solution_number)
+        res.print()
+        return res
 
     def create_blog_solution_table_html_code(self):
         self.leetcode_list = LeetcodeProblemList().get_list(self._update_leetcode)
@@ -170,6 +186,21 @@ class BlogSolutionListUpdate(object):
         if self._should_statics:
             self.statics()
         return self.after_update
+
+
+class StaticsTable(object):
+    def __init__(self, can_solve, total_number, lock_number, ac_number, ac_and_lock_number, solution_number):
+        self.can_solve = can_solve
+        self.total_number = total_number
+        self.lock_number = lock_number
+        self.ac_number = ac_number
+        self.ac_and_lock_number = ac_and_lock_number
+        self.solution_number = solution_number
+
+    def print(self):
+        print('可做总数: {} (题目总数: {} 有锁题数: {})'.format(self.can_solve, self.total_number, self.lock_number))
+        print('AC数目: {}(其中，有锁题目: {})'.format(self.ac_number, self.ac_and_lock_number))
+        print('已发的题解数: {}'.format(self.solution_number))
 
 
 if __name__ == '__main__':

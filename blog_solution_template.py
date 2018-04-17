@@ -38,7 +38,7 @@ def main(id_list, update_from_leetcode=False):
                        .format(cur_problem.url, cur_problem.title))
             ans.append('题目大意：\n')
             ans.append('思路：\n')
-            for lan in ('C++', 'Java', 'Python'):
+            for lan in ('C++', 'Python'):
                 ans.append('<p><strong>{}</strong></p>'.format(lan))
                 ans.append('<pre class="lang:{} decode:true ">class Solution(object):</pre>'.format(lan))
 

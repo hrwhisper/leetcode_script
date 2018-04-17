@@ -15,7 +15,7 @@ def _parse(res, _id, item):
 
 
 def update_solution(id_dict: dict):
-    updater = BlogSolutionListUpdate(update_leetcode=False, update_blog=True, should_statics=True)
+    updater = BlogSolutionListUpdate(update_leetcode=True, update_blog=True, should_statics=True)
     res = updater.create_blog_solution_table_html_code()
     for _ids, item in id_dict.items():
         if isinstance(_ids, tuple):
@@ -26,11 +26,10 @@ def update_solution(id_dict: dict):
 
     updater.save_in_table(res)
     updater.after_update = res
-    updater.statics()
+    # updater.statics()
 
 
 if __name__ == '__main__':
-    # add_new_solution()
     update_solution({
         (1): {
             'language': 'c++ / python / java',
