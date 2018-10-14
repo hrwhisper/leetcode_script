@@ -30,10 +30,9 @@ class LoginLeetcode(object):
 
     def login(self):
         login_url = 'https://leetcode.com/accounts/login/'
-        html = self.session.get(login_url, headers=self.my_head).text
-        html = BeautifulSoup(html, 'lxml')
+        self.session.get(login_url, headers=self.my_head)
         post_data = {
-            'csrfmiddlewaretoken': html.find('input', {'name': 'csrfmiddlewaretoken'})['value'],
+            'csrfmiddlewaretoken': self.session.cookies['csrftoken'],
             'login': self._username,
             'password': self._password
         }
